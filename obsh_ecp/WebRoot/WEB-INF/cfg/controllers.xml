@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="paraMethodResolver" 
+		class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="paramName">
+			<value>method</value>
+		</property>
+		<property name="defaultMethodName">
+			<value>defaultHandle</value>
+		</property>
+	</bean>
+	
+	<bean name="/xwecp.do" class="com.xwtech.xwecp.web.action.ServiceInvocationAction">
+		<property name="methodNameResolver" ref="paraMethodResolver" />
+		<property name="serviceExecutor" ref="serviceExecutor"/>
+		<property name="charset" value="UTF-8"></property>
+	</bean>
+</beans>

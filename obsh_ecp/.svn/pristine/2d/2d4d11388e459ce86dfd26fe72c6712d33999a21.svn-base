@@ -1,0 +1,22 @@
+#\u5546\u6237\u7b7e\u540d\u7528\u8bc1\u4e66
+#Merchant.Keystore.URL=/weblogic/unionpay/700000000000001-SIGN.pfx
+Merchant.Keystore.URL=C:\\700000000000001-SIGN.pfx
+#Merchant.Keystore.URL=C:\\test\\cert\\merkeystore.jks
+Merchant.Keystroe.PWD=123
+#PKCS12;JKS
+Merchant.Keystore.TYPE=PKCS12
+#\u7f51\u5173\u670d\u52a1\u9ed8\u8ba4\u7aef\u53e3\u53f7
+DEFAULT_PORT=443
+#scheme
+PROTOCOL_SCHEME=https
+Merchant.Server.Port=7002
+#\u652f\u4ed8\u7c7b\u4ea4\u6613URL
+HostPay.URL=
+#\u540e\u7eed\u7c7b\u4ea4\u6613URL
+HostCancel.URL=
+#\u5546\u6237ID--\u6682\u65f6\u672a\u4f7f\u7528
+MERCHANT.ID=04062410
+#1--\u7b7e\u540d   0--\u4e0d\u7b7e\u540d
+Merchant.Sign=1
+#1--SSL\u8fde\u63a5  0--NO SSL\u8fde\u63a5
+Merchant.SSL=0

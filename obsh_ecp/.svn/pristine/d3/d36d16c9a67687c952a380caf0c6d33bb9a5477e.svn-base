@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="logConfig" class="com.xwtech.xwecp.util.PropertiesConfiguration" singleton="true">
+		<property name="config">
+			<props>
+				<prop key="cdrDirect2DB">${log.cdrDirect2DB}</prop>
+				<prop key="isRecordRight">${log.isrecord_right}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean name="logDAO" class="com.xwtech.xwecp.log.LogDAOImpl"
+		singleton="true">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="cache" ref="cache"/>
+	</bean>
+
+</beans>

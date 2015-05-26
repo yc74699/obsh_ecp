@@ -1,0 +1,10 @@
+package com.xwtech.xwecp.service.logic.client_impl.common;
+
+import com.xwtech.xwecp.service.logic.LIException;
+import com.xwtech.xwecp.service.logic.pojo.QRY010022Result;
+
+public interface IFeereCommendService
+{
+	public QRY010022Result queryFeereCommend(String userId, String billMonth, String brandId, String productId, String startTime) throws LIException;
+
+}

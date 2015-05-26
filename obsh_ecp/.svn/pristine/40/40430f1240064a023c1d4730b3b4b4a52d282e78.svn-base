@@ -1,0 +1,58 @@
+# For JBoss: Avoid to setup Log4J outside $JBOSS_HOME/server/default/deploy/log4j.xml!
+# For all other servers: Comment out the Log4J listener in web.xml to activate Log4J.
+log4j.rootLogger=INFO, stdout, logfile
+log4j.logger.com.danga.MemCached=ERROR
+log4j.logger.org.apache=ERROR
+log4j.logger.org.springframework=ERROR
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p [%c] - <%m>%n
+
+log4j.appender.logfile=org.apache.log4j.RollingFileAppender
+log4j.appender.logfile.File=D:\OBSH_ECP_LOG\main.log
+log4j.appender.logfile.MaxFileSize=100MB
+log4j.appender.logfile.MaxBackupIndex=300
+log4j.appender.logfile.layout=org.apache.log4j.PatternLayout
+log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
+log4j.appender.logfile.encoding=UTF-8
+
+#logical interface detail logger
+log4j.logger.liAccessFailLogger=INFO, liAccessFailLogger
+log4j.appender.liAccessFailLogger=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.liAccessFailLogger.DatePattern='.'yyyyMMdd HH_mm
+log4j.appender.liAccessFailLogger.File=D:/OBSH_ECP_LOG/LiAccessLog/liAccessLogger.log
+log4j.appender.liAccessFailLogger.Append=true
+log4j.appender.liAccessFailLogger.Threshold=INFO
+log4j.appender.liAccessFailLogger.layout=org.apache.log4j.PatternLayout
+log4j.appender.liAccessFailLogger.layout.ConversionPattern=%m%n
+
+#boss request detail logger
+log4j.logger.bossRequestFailLogger=INFO, bossRequestFailLogger
+log4j.appender.bossRequestFailLogger=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.bossRequestFailLogger.DatePattern='.'yyyyMMdd HH_mm
+log4j.appender.bossRequestFailLogger.File=D:/OBSH_ECP_LOG/BossRequestLog/bossRequestLogger.log
+log4j.appender.bossRequestFailLogger.Append=true
+log4j.appender.bossRequestFailLogger.Threshold=INFO
+log4j.appender.bossRequestFailLogger.layout=org.apache.log4j.PatternLayout
+log4j.appender.bossRequestFailLogger.layout.ConversionPattern=%m%n
+
+#logical interface access logger for logging teletext and error
+log4j.logger.liAccessTeletextLogger=INFO, liAccessTeletextLogger
+log4j.appender.liAccessTeletextLogger=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.liAccessTeletextLogger.DatePattern='.'yyyyMMdd-HH
+log4j.appender.liAccessTeletextLogger.File=D:/OBSH_ECP_LOG/BossRequestTeletextLog/liAccessTeletextLogger.log
+log4j.appender.liAccessTeletextLogger.Append=true
+log4j.appender.liAccessTeletextLogger.Threshold=INFO
+log4j.appender.liAccessTeletextLogger.layout=org.apache.log4j.PatternLayout
+log4j.appender.liAccessTeletextLogger.layout.ConversionPattern=%m%n
+
+#boss request for logging teletext and error
+log4j.logger.bossRequestTeletextLogger=INFO, bossRequestTeletextLogger
+log4j.appender.bossRequestTeletextLogger=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.bossRequestTeletextLogger.DatePattern='.'yyyyMMdd-HH
+log4j.appender.bossRequestTeletextLogger.File=D:/OBSH_ECP_LOG/BossRequestTeletextLog/bossRequestTeletextLogger.log
+log4j.appender.bossRequestTeletextLogger.Append=true
+log4j.appender.bossRequestTeletextLogger.Threshold=INFO
+log4j.appender.bossRequestTeletextLogger.layout=org.apache.log4j.PatternLayout
+log4j.appender.bossRequestTeletextLogger.layout.ConversionPattern=%m%n

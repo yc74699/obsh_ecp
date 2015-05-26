@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="service_impl" class="com.xwtech.xwecp.util.PropertiesConfiguration" singleton="true">
+		<property name="config">
+			<props>
+				<prop key="pojoPackage">${boss.evaluate.pojoPackage}</prop>	
+				<prop key="extensionClassPackage">${boss.evaluate.extensionClassPackage}</prop>		
+			</props>
+		</property>
+	</bean>
+</beans>

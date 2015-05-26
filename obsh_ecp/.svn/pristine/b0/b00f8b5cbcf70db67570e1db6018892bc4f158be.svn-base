@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="businessCode2BossCodeExecutor" class="com.xwtech.xwecp.teletext.funcs.BusinessCode2BossCodeFunctionExecutor" singleton="true">
+		<property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2BossCode2Executor" class="com.xwtech.xwecp.teletext.funcs.BusinessCode2BossCode2FunctionExecutor" singleton="true">
+		<property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2BossCode3Executor" class="com.xwtech.xwecp.teletext.funcs.BusinessCode2BossCode3FunctionExecutor" singleton="true">
+		<property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2BossCode4Executor" class="com.xwtech.xwecp.teletext.funcs.BusinessCode2BossCode4FunctionExecutor" singleton="true">
+		<property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2BossCode6Executor" class="com.xwtech.xwecp.teletext.funcs.BusinessCode2BossCode6FunctionExecutor" singleton="true">
+		<property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2BusinessTypeExecutor" class="com.xwtech.xwecp.service.server.funcs.BusinessCode2BusinessTypeExecutor" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2BusinessTypeExecutor2" class="com.xwtech.xwecp.service.server.funcs.BusinessCode2BusinessTypeExecutor2" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2delBusinessTypeExecutor" class="com.xwtech.xwecp.service.server.funcs.BusinessCode2DelBusinessTypeExecutor" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2delBusinessType2Executor" class="com.xwtech.xwecp.service.server.funcs.BusinessCode2DelBusinessType2Executor" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2delBusinessType3Executor" class="com.xwtech.xwecp.service.server.funcs.BusinessCode2DelBusinessType3Executor" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="businessCode2delBusinessType4Executor" class="com.xwtech.xwecp.service.server.funcs.BusinessCode2DelBusinessType4Executor" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="toBossBrandExecutor" class="com.xwtech.xwecp.teletext.funcs.ToBossBrandExecutor" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="toBossCityExecutor" class="com.xwtech.xwecp.teletext.funcs.ToBossCityExecutor" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	<bean id="toBossOrgIdExecutor" class="com.xwtech.xwecp.teletext.funcs.ToOrgIdExecutor" singleton="true">
+	  <property name="wellFormedDAO" ref="wellFormedDAO" />
+	</bean>
+	
+	<bean id="checkNowMonthExecutor" class="com.xwtech.xwecp.service.server.funcs.CheckNowMonthExecutor" singleton="true">
+	</bean>
+	
+	<bean id="toOprTypeFunctionExecutor" class="com.xwtech.xwecp.teletext.funcs.ToOprTypeFunctionExecutor" singleton="true">
+	</bean>
+	
+	<bean id="toOprTypeFunction2Executor" class="com.xwtech.xwecp.teletext.funcs.ToOprTypeFunction2Executor" singleton="true">
+	</bean>
+	
+	<bean id="changeOprTypeFunctionExecutor" class="com.xwtech.xwecp.teletext.funcs.ChangeOprTypeFunctionExecutor" singleton="true">
+	</bean>
+	
+	<bean id="changeOprCodeFunctionExecutor" class="com.xwtech.xwecp.teletext.funcs.ChangeOprCodeFunctionExecutor" singleton="true">
+	</bean>
+	
+	<bean id="chooseFlagFunctionExecutor" class="com.xwtech.xwecp.teletext.funcs.ChooseFlagFunctionExecutor" singleton="true">
+	</bean>
+	
+	<bean id="toMemberLevExecutor" class="com.xwtech.xwecp.teletext.funcs.ToMemberLevExecutor" singleton="true">
+	</bean>
+	
+	<bean id="toOrderCode" class="com.xwtech.xwecp.teletext.funcs.ToOrderCode" singleton="true">
+	</bean>
+
+	<bean id="valueMap" class="com.xwtech.xwecp.teletext.funcs.ValueMap" singleton="true">
+	</bean>
+	
+	<bean id="toMemberLevelExecutor" class="com.xwtech.xwecp.teletext.funcs.ToMemberLevelExecutor" singleton="true">
+	</bean>
+	
+	<bean id="toOprType" class="com.xwtech.xwecp.teletext.funcs.ToOprTypeExecutor" singleton="true">
+	</bean>
+	
+	<bean id="toOprType2" class="com.xwtech.xwecp.teletext.funcs.ToOprType2Executor" singleton="true">
+	</bean>
+	
+	<bean id="changeOprType" class="com.xwtech.xwecp.teletext.funcs.ChangeOprTypeExecutor" singleton="true">
+	</bean>
+	
+</beans>

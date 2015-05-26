@@ -1,0 +1,1345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- 统一变量数据 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">  
+       		<list>  
+          		<value>/WEB-INF/classes/xwecp.properties</value>  
+          		<value>/WEB-INF/classes/boss_impl.properties</value>  
+          		<value>/WEB-INF/classes/group_net.properties</value>
+        	</list>  
+    	</property>  
+	</bean>
+	
+	<bean name="messageHelper" class="com.xwtech.xwecp.msg.MessageHelper" singleton="true">
+	</bean>
+
+	<bean name="serviceExecutor" class="com.xwtech.xwecp.service.ServiceExecutor" singleton="true">
+		<property name="serviceLocator" ref="serviceLocator"></property>
+		<property name="messageHelper" ref="messageHelper"></property>
+		<property name="serviceCallerPrivilegeDAO" ref="serviceCallerPrivilegeDAOImpl"></property>
+		<property name="accessIdGenerator" ref="accessIdGenerator"></property><!-- from individual.xml -->
+	</bean>
+
+	<bean name="serviceLocator" class="com.xwtech.xwecp.service.ServiceLocator" singleton="true">
+		<property name="serviceConfigDAO" ref="serviceConfigDAO"/>
+	</bean>
+	
+	<bean name="cache" class="com.xwtech.xwecp.memcached.MemcachedManagerImpl" singleton="true" init-method="initialize">
+		<property name="serverName" value="default0"></property>
+		<property name="servers" value="${memcached.servers}"></property>
+		<property name="weights" value="${memcached.weights}"></property>
+		<property name="initConn" value="${memcached.initConn}"></property>
+		<property name="minConn" value="${memcached.minConn}"></property>
+		<property name="maxConn" value="${memcached.maxConn}"></property>
+		<property name="maxIdle" value="${memcached.maxIdle}"></property>
+		<property name="maintSleep" value="${memcached.maintSleep}"></property>
+		<property name="nagle" value="${memcached.nagle}"></property>
+		<property name="socketTo" value="${memcached.socketTo}"></property>
+		<property name="socketConnectTo" value="${memcached.socketConnectTo}"></property>
+		<property name="compressEnable" value="${memcached.compressEnable}"></property>
+		<property name="compressThreshold" value="${memcached.compressThreshold}"></property>
+	</bean>
+	
+	<bean name="cache1" class="com.xwtech.xwecp.memcached.MemcachedManagerImpl" singleton="true" init-method="initialize">
+        <property name="serverName" value="default1"></property>
+		<property name="servers" value="${memcached1.servers}"></property>
+		<property name="weights" value="${memcached1.weights}"></property>
+		<property name="initConn" value="${memcached.initConn}"></property>
+		<property name="minConn" value="${memcached.minConn}"></property>
+		<property name="maxConn" value="${memcached.maxConn}"></property>
+		<property name="maxIdle" value="${memcached.maxIdle}"></property>
+		<property name="maintSleep" value="${memcached.maintSleep}"></property>
+		<property name="nagle" value="${memcached.nagle}"></property>
+		<property name="socketTo" value="${memcached.socketTo}"></property>
+		<property name="socketConnectTo" value="${memcached.socketConnectTo}"></property>
+		<property name="compressEnable" value="${memcached.compressEnable}"></property>
+		<property name="compressThreshold" value="${memcached.compressThreshold}"></property>
+</bean>
+	
+	<bean name="bossTeletextUtil" class="com.xwtech.xwecp.teletext.BossTeletextUtil" singleton="true" init-method="initialize">	
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="externalFunctionMap">
+			<map>
+				<entry key="to_boss_code">
+					<ref bean="businessCode2BossCodeExecutor"/>
+				</entry>
+				<entry key="to_boss_code2">
+					<ref bean="businessCode2BossCode2Executor"/>
+				</entry>
+				<entry key="to_boss_code3">
+					<ref bean="businessCode2BossCode3Executor"/>
+				</entry>
+				<entry key="to_boss_code4">
+					<ref bean="businessCode2BossCode4Executor"/>
+				</entry>
+				<entry key="to_boss_code6">
+					<ref bean="businessCode2BossCode6Executor"/>
+				</entry>
+				<entry key="to_opr_type">
+					<ref bean="toOprTypeFunctionExecutor"/>
+				</entry>
+				<entry key="to_opr_type3">
+					<ref bean="toOprTypeFunction2Executor"/>
+				</entry>
+				<entry key="change_oprType">
+					<ref bean="changeOprTypeFunctionExecutor"/>
+				</entry>
+				<entry key="change_oprCode">
+					<ref bean="changeOprCodeFunctionExecutor"/>
+				</entry>
+				<entry key="choose_flag">
+					<ref bean="chooseFlagFunctionExecutor"/>
+				</entry>
+				<entry key="to_member_lev">
+					<ref bean="toMemberLevExecutor"/>
+				</entry>
+				<entry key="to_order_code">
+					<ref bean="toOrderCode"/>
+				</entry>
+				<entry key="value_map">
+					<ref bean="valueMap"/>
+				</entry>
+				<entry key="to_member_level">
+					<ref bean="toMemberLevelExecutor"/>
+				</entry>
+				<entry key="to_boss_brand">
+					<ref bean="toBossBrandExecutor"/>
+				</entry>
+				<entry key="to_boss_city">
+					<ref bean="toBossCityExecutor"/>
+				</entry>
+				<entry key="to_boss_orgid">
+					<ref bean="toBossOrgIdExecutor"/>
+				</entry>
+				<entry key="toOprType">
+					<ref bean="toOprType"/>
+				</entry>
+				<entry key="to_opr_type2">
+					<ref bean="toOprType2"/>
+				</entry>
+				<entry key="changeOprType">
+					<ref bean="changeOprType"/>
+				</entry>
+				<entry key="change_oprTypeTSB"><!-- 增加提速包，关闭为0变2 -->
+					<ref bean="changeOprTypeFunctionTSBExecutor"/>
+				</entry>
+				<entry key="change_chooseFlag"><!-- 生效时间 0：立即1：次日2：次月 改成1：立即2：次日3：次月  -->
+					<ref bean="changeChooseFlagFunctionTSBExecutor"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+    <bean id="changeChooseFlagFunctionTSBExecutor" class="com.xwtech.xwecp.teletext.funcs.ChangeChooseFlagFunctionTSBExecutor" singleton="true">
+	</bean>
+	<bean id="changeOprTypeFunctionTSBExecutor" class="com.xwtech.xwecp.teletext.funcs.ChangeOprTypeFunctionTSBExecutor" singleton="true">
+	</bean>
+	
+	<bean name="wellFormedDAO" class="com.xwtech.xwecp.dao.WellFormedDAO" singleton="true">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+		 <property name="lobHandler"><ref bean="lobHandler"/></property>
+	</bean>
+	
+	<bean name="serviceConfigDAO" class="com.xwtech.xwecp.dao.service.ServiceConfigDAOImpl" singleton="true">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+		<property name="lobHandler"><ref bean="lobHandler"/></property>
+	</bean>
+	
+	<bean name="smsDao" class="com.xwtech.xwecp.dao.SmsDao" singleton="true">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+		<property name="lobHandler"><ref bean="lobHandler"/></property>
+	</bean>
+	
+	<!-- 这个实例由ServiceLocator从ApplicationContext中直接GET, 因为ServiceLocator是单例的, 如果使用注入会有问题, 考虑使用对象池以提高性能 -->
+	<bean name="serviceImpl" class="com.xwtech.xwecp.service.server.DefaultServiceImpl" singleton="false">
+		<property name="wellFormedDAO" ref="wellFormedDAO"></property>
+		<property name="remote" ref="bossRemote"></property>
+		<property name="teletextUtil" ref="bossTeletextUtil"></property>
+		<property name="bossResponseValidator" ref="bossResponseValidator"></property>
+		<property name="externalFunctionMap">
+			<map>
+				<entry key="qry_business_typeof">
+					<ref bean="businessCode2BusinessTypeExecutor"/>
+				</entry>
+				<entry key="qry_business_typeof2">
+					<ref bean="businessCode2BusinessTypeExecutor2"/>
+				</entry>
+				<entry key="del_business_typeof">
+					<ref bean="businessCode2delBusinessTypeExecutor"/>
+				</entry>
+				<entry key="del_business_typeof2">
+					<ref bean="businessCode2delBusinessType2Executor"/>
+				</entry>
+				<entry key="del_business_typeof3">
+					<ref bean="businessCode2delBusinessType3Executor"/>
+				</entry>
+				<entry key="del_business_typeof4">
+					<ref bean="businessCode2delBusinessType4Executor"/>
+				</entry>
+				<entry key="check_now_month">
+					<ref bean="checkNowMonthExecutor"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean name="bossResponseValidator" class="com.xwtech.xwecp.service.server.JSBossResponseValidatorImpl" singleton="true">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	
+
+	<bean name="bossRemote" class="com.xwtech.xwecp.communication.RemoteImpl" singleton="true">
+		<property name="adapter" ref="communicateAdapter"></property>
+		<property name="bossRequestIdGenerator" ref="bossRequestIdGenerator"></property>
+	</bean>
+	
+	<bean name="communicateAdapter" class="com.xwtech.xwecp.communication.DefaultCommunicateAdapter" singleton="true">
+		<property name="communicator" ref="bossCommunicator1"></property>
+		<property name="communicatorMap" ref="communicatorMap"></property>
+		<property name="teletextDispatchDAO" ref="teletextDispatchDAO"></property>
+	</bean>
+	
+	<bean id="communicatorMap" class="java.util.HashMap">
+	   <constructor-arg>
+	    <map>
+	     <entry key="boss2" value-ref="bossCommunicator2" />
+	     <entry key="boss3" value-ref="bossCommunicator3" />
+	     <entry key="boss4" value-ref="bossCommunicator4" />
+	     <entry key="boss5" value-ref="bossCommunicator5" />
+	     <entry key="boss6" value-ref="bossCommunicator6" />
+	     <entry key="boss7" value-ref="bossCommunicator7" />
+	     <!-- 分布式清单 -->
+	     <entry key="boss12" value-ref="bossCommunicator12" />
+	     <!-- 流量银行-->
+	     <entry key="boss10" value-ref="bossCommunicator10" />
+	     
+	     
+	     <!-- 抢流量红包BOSS 一批 一库-->
+	     <entry key="boss001" value-ref="bossCommunicator001" />
+	     <!-- 抢流量红包BOSS 一批 二库-->
+	     <entry key="boss002" value-ref="bossCommunicator002" />
+	     <!-- 抢流量红包BOSS 一批 三库-->
+	     <entry key="boss003" value-ref="bossCommunicator003" />
+	     <!-- 抢流量红包BOSS 一批 四库-->
+	     <entry key="boss004" value-ref="bossCommunicator004" />
+	     
+	     <!-- 抢流量红包BOSS 二批 一库-->
+	     <entry key="boss005" value-ref="bossCommunicator005" />
+	     <!-- 抢流量红包BOSS 二批 二库-->
+	     <entry key="boss006" value-ref="bossCommunicator006" />
+	     <!-- 抢流量红包BOSS 二批 三库-->
+	     <entry key="boss007" value-ref="bossCommunicator007" />
+	     <!-- 抢流量红包BOSS 二批 四库-->
+	     <entry key="boss008" value-ref="bossCommunicator008" />
+	     
+	     <entry key="boss9" value-ref="bossCommunicator9" />
+		 <entry key="boss1114" value-ref="bossCommunicator1114" />
+	     <!-- 割接地市_镇江 -->
+	     <entry key="boss118" value-ref="bossCommunicator118" />
+	     <entry key="boss218" value-ref="bossCommunicator218" />
+	     <entry key="boss318" value-ref="bossCommunicator318" />
+	     <entry key="boss718" value-ref="bossCommunicator718" />
+	     <entry key="boss1218" value-ref="bossCommunicator1218" />
+	     <!-- 割接地市_常州 -->
+	     <entry key="boss117" value-ref="bossCommunicator117" />
+	     <entry key="boss217" value-ref="bossCommunicator217" />
+	     <entry key="boss317" value-ref="bossCommunicator317" />
+	     <entry key="boss717" value-ref="bossCommunicator717" />
+	     <entry key="boss1217" value-ref="bossCommunicator1217" /> 
+	     <!-- 割接地市_淮安 -->
+	     <entry key="boss112" value-ref="bossCommunicator112" />
+	     <entry key="boss212" value-ref="bossCommunicator212" />
+	     <entry key="boss312" value-ref="bossCommunicator312" />
+	     <entry key="boss712" value-ref="bossCommunicator712" />
+	     <entry key="boss1212" value-ref="bossCommunicator1212" />
+	     
+	     
+	     <!-- 割接地市_南通 -->
+	     <entry key="boss120" value-ref="bossCommunicator120" />
+	     <entry key="boss220" value-ref="bossCommunicator220" />
+	     <entry key="boss320" value-ref="bossCommunicator320" />
+    	 <entry key="boss720" value-ref="bossCommunicator720" />
+	     <entry key="boss1220" value-ref="bossCommunicator1220" />
+	     <!-- 割接地市_泰州 -->
+	     <entry key="boss121" value-ref="bossCommunicator121" />
+	     <entry key="boss221" value-ref="bossCommunicator221" />
+	     <entry key="boss321" value-ref="bossCommunicator321" />
+         <entry key="boss721" value-ref="bossCommunicator721" />
+	     <entry key="boss1221" value-ref="bossCommunicator1221" />
+	     <!-- 割接地市_无锡 -->
+	     <entry key="boss119" value-ref="bossCommunicator119" />
+	     <entry key="boss219" value-ref="bossCommunicator219" />
+	     <entry key="boss319" value-ref="bossCommunicator319" />
+	     <entry key="boss719" value-ref="bossCommunicator719" />
+	     <entry key="boss1219" value-ref="bossCommunicator1219" />
+	     <!-- 割接地市_盐城 -->
+	     <entry key="boss122" value-ref="bossCommunicator122" />
+	     <entry key="boss222" value-ref="bossCommunicator222" />
+	     <entry key="boss322" value-ref="bossCommunicator322" />
+	     <entry key="boss722" value-ref="bossCommunicator722" />
+	     <entry key="boss1222" value-ref="bossCommunicator1222" />
+	     <!-- 割接地市_扬州 -->
+	     <entry key="boss123" value-ref="bossCommunicator123" />
+	     <entry key="boss223" value-ref="bossCommunicator223" />
+	     <entry key="boss323" value-ref="bossCommunicator323" />
+	     <entry key="boss723" value-ref="bossCommunicator723" />
+	     <entry key="boss1223" value-ref="bossCommunicator1223" />
+	     <!-- 割接地市_南京 -->
+	     <entry key="boss114" value-ref="bossCommunicator114" />
+	     <entry key="boss214" value-ref="bossCommunicator214" />
+	     <entry key="boss314" value-ref="bossCommunicator314" />
+   		 <entry key="boss714" value-ref="bossCommunicator714" />
+		 <entry key="boss1214" value-ref="bossCommunicator1214" />
+	     <!-- 割接地市_苏州 -->
+	     <entry key="boss111" value-ref="bossCommunicator111" />
+	     <entry key="boss211" value-ref="bossCommunicator211" />
+	     <entry key="boss311" value-ref="bossCommunicator311" />
+         <entry key="boss711" value-ref="bossCommunicator711" />
+	     <entry key="boss1211" value-ref="bossCommunicator1211" />
+	     <!-- 割接地市_连云港 -->
+	     <entry key="boss115" value-ref="bossCommunicator115" />
+	     <entry key="boss215" value-ref="bossCommunicator215" />
+	     <entry key="boss315" value-ref="bossCommunicator315" />
+         <entry key="boss715" value-ref="bossCommunicator715" />
+	     <entry key="boss1215" value-ref="bossCommunicator1215" /> 
+	     <!-- 割接地市_宿迁 -->
+	     <entry key="boss113" value-ref="bossCommunicator113" />
+	     <entry key="boss213" value-ref="bossCommunicator213" />
+	     <entry key="boss313" value-ref="bossCommunicator313" />
+	     <entry key="boss713" value-ref="bossCommunicator713" />
+	     <entry key="boss1213" value-ref="bossCommunicator1213" />
+	     <!-- 割接地市_徐州 -->
+	     <entry key="boss116" value-ref="bossCommunicator116" />
+	     <entry key="boss216" value-ref="bossCommunicator216" />
+	     <entry key="boss316" value-ref="bossCommunicator316" />
+	     <entry key="boss716" value-ref="bossCommunicator716" />
+	     <entry key="boss1216" value-ref="bossCommunicator1216" />
+	     <!--增加集团的CRM地址  -->
+	     <entry key="boss911" value-ref="bossCommunicator911" />
+	     <entry key="boss912" value-ref="bossCommunicator912" />
+	     <entry key="boss913" value-ref="bossCommunicator913" />
+		 <entry key="boss914" value-ref="bossCommunicator914" />
+	     <entry key="boss915" value-ref="bossCommunicator915" />
+	     <entry key="boss916" value-ref="bossCommunicator916" />
+	     <entry key="boss917" value-ref="bossCommunicator917" />
+	     <entry key="boss918" value-ref="bossCommunicator918" />
+	     <entry key="boss919" value-ref="bossCommunicator919" />
+	     <entry key="boss920" value-ref="bossCommunicator920" />
+	     <entry key="boss921" value-ref="bossCommunicator921" />
+	     <entry key="boss922" value-ref="bossCommunicator922" />
+		 <entry key="boss923" value-ref="bossCommunicator923" />
+	    </map>
+	   </constructor-arg>
+	</bean>
+	 
+	 <bean name="bossCommunicator1" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1.soTimeout}"/>
+		<property name="maxThreads" value="${boss1.maxThreads}"/>
+		<property name="encoding" value="${boss1.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	 <bean name="bossCommunicator2" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss2.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss2.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss2.soTimeout}"/>
+		<property name="maxThreads" value="${boss2.maxThreads}"/>
+		<property name="encoding" value="${boss2.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+<bean name="bossCommunicator1114" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1114.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1114.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1114.soTimeout}"/>
+		<property name="maxThreads" value="${boss1114.maxThreads}"/>
+		<property name="encoding" value="${boss1114.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	 <bean name="bossCommunicator3" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss3.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss3.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss3.soTimeout}"/>
+		<property name="maxThreads" value="${boss3.maxThreads}"/>
+		<property name="encoding" value="${boss3.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator4" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss4.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss4.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss4.soTimeout}"/>
+		<property name="maxThreads" value="${boss4.maxThreads}"/>
+		<property name="encoding" value="${boss4.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator5" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss5.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss5.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss5.soTimeout}"/>
+		<property name="maxThreads" value="${boss5.maxThreads}"/>
+		<property name="encoding" value="${boss5.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator6" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss6.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss6.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss6.soTimeout}"/>
+		<property name="maxThreads" value="${boss6.maxThreads}"/>
+		<property name="encoding" value="${boss6.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+  	<bean name="bossCommunicator7" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss7.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss7.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss7.soTimeout}"/>
+		<property name="maxThreads" value="${boss7.maxThreads}"/>
+	          <property name="encoding" value="${boss7.encoding}"/>
+	          <property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+		</bean>  
+	<!-- 分布式清单 -->
+	<bean name="bossCommunicator12" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss12.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss12.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss12.soTimeout}"/>
+		<property name="maxThreads" value="${boss12.maxThreads}"/>
+	    <property name="encoding" value="${boss12.encoding}"/>
+	    <property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+		</bean>  
+	<!-- 流量银行 -->
+	<bean name="bossCommunicator10" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss10.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss10.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss10.soTimeout}"/>
+		<property name="maxThreads" value="${boss10.maxThreads}"/>
+		<property name="encoding" value="${boss10.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 抢流量红包BOSS 一库 -->
+	<bean name="bossCommunicator001" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss001.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss001.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss001.soTimeout}"/>
+		<property name="maxThreads" value="${boss001.maxThreads}"/>
+		<property name="encoding" value="${boss001.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 抢流量红包BOSS 二库 -->
+	<bean name="bossCommunicator002" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss002.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss002.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss002.soTimeout}"/>
+		<property name="maxThreads" value="${boss002.maxThreads}"/>
+		<property name="encoding" value="${boss002.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 抢流量红包BOSS 三库 -->
+	<bean name="bossCommunicator003" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss003.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss003.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss003.soTimeout}"/>
+		<property name="maxThreads" value="${boss003.maxThreads}"/>
+		<property name="encoding" value="${boss003.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 抢流量红包BOSS 四库 -->
+	<bean name="bossCommunicator004" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss004.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss004.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss004.soTimeout}"/>
+		<property name="maxThreads" value="${boss004.maxThreads}"/>
+		<property name="encoding" value="${boss004.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	
+	<!-- 抢流量红包BOSS 二批 一库 -->
+	<bean name="bossCommunicator005" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss005.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss005.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss005.soTimeout}"/>
+		<property name="maxThreads" value="${boss005.maxThreads}"/>
+		<property name="encoding" value="${boss005.encoding}"/>
+	</bean>
+	
+	<!-- 抢流量红包BOSS 二批 二库 -->
+	<bean name="bossCommunicator006" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss006.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss006.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss006.soTimeout}"/>
+		<property name="maxThreads" value="${boss006.maxThreads}"/>
+		<property name="encoding" value="${boss006.encoding}"/>
+	</bean>
+	
+	<!-- 抢流量红包BOSS 二批 三库 -->
+	<bean name="bossCommunicator007" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss007.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss007.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss007.soTimeout}"/>
+		<property name="maxThreads" value="${boss007.maxThreads}"/>
+		<property name="encoding" value="${boss007.encoding}"/>
+	</bean>
+	
+	<!-- 抢流量红包BOSS 二批  四库 -->
+	<bean name="bossCommunicator008" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss008.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss008.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss008.soTimeout}"/>
+		<property name="maxThreads" value="${boss008.maxThreads}"/>
+		<property name="encoding" value="${boss008.encoding}"/>
+	</bean>
+	
+	<!-- 割接地市_镇江_业务查询 -->
+	<bean name="bossCommunicator118" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss118.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss118.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss118.soTimeout}"/>
+		<property name="maxThreads" value="${boss118.maxThreads}"/>
+		<property name="encoding" value="${boss118.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_镇江_清单查询 -->
+	<bean name="bossCommunicator218" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss218.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss218.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss218.soTimeout}"/>
+		<property name="maxThreads" value="${boss218.maxThreads}"/>
+		<property name="encoding" value="${boss218.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator718" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss718.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss718.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss718.soTimeout}"/>
+		<property name="maxThreads" value="${boss718.maxThreads}"/>
+		<property name="encoding" value="${boss718.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator1218" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1218.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1218.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1218.soTimeout}"/>
+		<property name="maxThreads" value="${boss1218.maxThreads}"/>
+		<property name="encoding" value="${boss1218.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<!-- 割接地市_镇江_大批量查询 -->
+	<bean name="bossCommunicator318" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss318.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss318.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss318.soTimeout}"/>
+		<property name="maxThreads" value="${boss318.maxThreads}"/>
+		<property name="encoding" value="${boss318.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_常州_业务查询 -->
+	<bean name="bossCommunicator117" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss117.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss117.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss117.soTimeout}"/>
+		<property name="maxThreads" value="${boss117.maxThreads}"/>
+		<property name="encoding" value="${boss117.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_常州_清单查询 -->
+	<bean name="bossCommunicator217" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss217.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss217.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss217.soTimeout}"/>
+		<property name="maxThreads" value="${boss217.maxThreads}"/>
+		<property name="encoding" value="${boss217.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator717" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss717.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss717.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss717.soTimeout}"/>
+		<property name="maxThreads" value="${boss717.maxThreads}"/>
+		<property name="encoding" value="${boss717.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator1217" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1217.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1217.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1217.soTimeout}"/>
+		<property name="maxThreads" value="${boss1217.maxThreads}"/>
+		<property name="encoding" value="${boss1217.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<!-- 割接地市_常州_大批量查询 -->
+	<bean name="bossCommunicator317" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss317.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss317.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss317.soTimeout}"/>
+		<property name="maxThreads" value="${boss317.maxThreads}"/>
+		<property name="encoding" value="${boss317.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_淮安_业务查询 -->
+	<bean name="bossCommunicator112" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss112.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss112.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss112.soTimeout}"/>
+		<property name="maxThreads" value="${boss112.maxThreads}"/>
+		<property name="encoding" value="${boss112.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_淮安_清单查询 -->
+	<bean name="bossCommunicator212" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss212.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss212.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss212.soTimeout}"/>
+		<property name="maxThreads" value="${boss212.maxThreads}"/>
+		<property name="encoding" value="${boss212.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator712" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss712.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss712.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss712.soTimeout}"/>
+		<property name="maxThreads" value="${boss712.maxThreads}"/>
+		<property name="encoding" value="${boss712.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+		<bean name="bossCommunicator1212" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1212.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1212.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1212.soTimeout}"/>
+		<property name="maxThreads" value="${boss1212.maxThreads}"/>
+		<property name="encoding" value="${boss1212.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_淮安_大批量查询 -->
+	<bean name="bossCommunicator312" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss312.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss312.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss312.soTimeout}"/>
+		<property name="maxThreads" value="${boss312.maxThreads}"/>
+		<property name="encoding" value="${boss312.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_南通_业务查询 -->
+	<bean name="bossCommunicator120" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss120.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss120.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss120.soTimeout}"/>
+		<property name="maxThreads" value="${boss120.maxThreads}"/>
+		<property name="encoding" value="${boss120.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_南通_清单查询 -->
+	<bean name="bossCommunicator220" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss220.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss220.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss220.soTimeout}"/>
+		<property name="maxThreads" value="${boss220.maxThreads}"/>
+		<property name="encoding" value="${boss220.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator720" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss720.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss720.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss720.soTimeout}"/>
+		<property name="maxThreads" value="${boss720.maxThreads}"/>
+		<property name="encoding" value="${boss720.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+		<bean name="bossCommunicator1220" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1220.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1220.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1220.soTimeout}"/>
+		<property name="maxThreads" value="${boss1220.maxThreads}"/>
+		<property name="encoding" value="${boss1220.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<!-- 割接地市_南通_大批量查询 -->
+	<bean name="bossCommunicator320" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss320.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss320.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss320.soTimeout}"/>
+		<property name="maxThreads" value="${boss320.maxThreads}"/>
+		<property name="encoding" value="${boss320.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_泰州_业务查询 -->
+	<bean name="bossCommunicator121" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss121.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss121.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss121.soTimeout}"/>
+		<property name="maxThreads" value="${boss121.maxThreads}"/>
+		<property name="encoding" value="${boss121.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_泰州_清单查询 -->
+	<bean name="bossCommunicator221" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss221.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss221.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss221.soTimeout}"/>
+		<property name="maxThreads" value="${boss221.maxThreads}"/>
+		<property name="encoding" value="${boss221.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator721" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss721.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss721.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss721.soTimeout}"/>
+		<property name="maxThreads" value="${boss721.maxThreads}"/>
+		<property name="encoding" value="${boss721.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+		<bean name="bossCommunicator1221" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1221.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1221.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1221.soTimeout}"/>
+		<property name="maxThreads" value="${boss1221.maxThreads}"/>
+		<property name="encoding" value="${boss1221.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<!-- 割接地市_泰州_大批量查询 -->
+	<bean name="bossCommunicator321" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss321.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss321.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss321.soTimeout}"/>
+		<property name="maxThreads" value="${boss321.maxThreads}"/>
+		<property name="encoding" value="${boss321.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_无锡_业务查询 -->
+	<bean name="bossCommunicator119" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss119.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss119.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss119.soTimeout}"/>
+		<property name="maxThreads" value="${boss119.maxThreads}"/>
+		<property name="encoding" value="${boss119.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_无锡_清单查询 -->
+	<bean name="bossCommunicator219" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss219.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss219.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss219.soTimeout}"/>
+		<property name="maxThreads" value="${boss219.maxThreads}"/>
+		<property name="encoding" value="${boss219.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator719" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss719.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss719.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss719.soTimeout}"/>
+		<property name="maxThreads" value="${boss719.maxThreads}"/>
+		<property name="encoding" value="${boss719.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+		<bean name="bossCommunicator1219" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1219.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1219.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1219.soTimeout}"/>
+		<property name="maxThreads" value="${boss1219.maxThreads}"/>
+		<property name="encoding" value="${boss1219.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+     <!-- 割接地市_无锡_大批量查询 -->
+	<bean name="bossCommunicator319" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss319.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss319.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss319.soTimeout}"/>
+		<property name="maxThreads" value="${boss319.maxThreads}"/>
+		<property name="encoding" value="${boss319.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_盐城_业务查询 -->
+	<bean name="bossCommunicator122" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss122.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss122.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss122.soTimeout}"/>
+		<property name="maxThreads" value="${boss122.maxThreads}"/>
+		<property name="encoding" value="${boss122.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_盐城_清单查询 -->
+	<bean name="bossCommunicator222" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss222.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss222.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss222.soTimeout}"/>
+		<property name="maxThreads" value="${boss222.maxThreads}"/>
+		<property name="encoding" value="${boss222.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator722" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss722.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss722.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss722.soTimeout}"/>
+		<property name="maxThreads" value="${boss722.maxThreads}"/>
+		<property name="encoding" value="${boss722.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+		<bean name="bossCommunicator1222" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1222.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1222.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1222.soTimeout}"/>
+		<property name="maxThreads" value="${boss1222.maxThreads}"/>
+		<property name="encoding" value="${boss1222.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_盐城_大批量查询 -->
+	<bean name="bossCommunicator322" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss322.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss322.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss322.soTimeout}"/>
+		<property name="maxThreads" value="${boss322.maxThreads}"/>
+		<property name="encoding" value="${boss322.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_扬州_业务查询 -->
+	<bean name="bossCommunicator123" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss123.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss123.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss123.soTimeout}"/>
+		<property name="maxThreads" value="${boss123.maxThreads}"/>
+		<property name="encoding" value="${boss123.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_扬州_清单查询 -->
+	<bean name="bossCommunicator223" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss223.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss223.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss223.soTimeout}"/>
+		<property name="maxThreads" value="${boss223.maxThreads}"/>
+		<property name="encoding" value="${boss223.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator723" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss723.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss723.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss723.soTimeout}"/>
+		<property name="maxThreads" value="${boss723.maxThreads}"/>
+		<property name="encoding" value="${boss723.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+		<bean name="bossCommunicator1223" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1223.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1223.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1223.soTimeout}"/>
+		<property name="maxThreads" value="${boss1223.maxThreads}"/>
+		<property name="encoding" value="${boss1223.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+    <!-- 割接地市_扬州_大批量查询 -->
+	<bean name="bossCommunicator323" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss323.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss323.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss323.soTimeout}"/>
+		<property name="maxThreads" value="${boss323.maxThreads}"/>
+		<property name="encoding" value="${boss323.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_南京_业务查询 -->
+	<bean name="bossCommunicator114" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss114.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss114.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss114.soTimeout}"/>
+		<property name="maxThreads" value="${boss114.maxThreads}"/>
+		<property name="encoding" value="${boss114.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_南京_清单查询 -->
+	<bean name="bossCommunicator214" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss214.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss214.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss214.soTimeout}"/>
+		<property name="maxThreads" value="${boss214.maxThreads}"/>
+		<property name="encoding" value="${boss214.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_南京_大批量查询 -->
+	<bean name="bossCommunicator314" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss314.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss314.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss314.soTimeout}"/>
+		<property name="maxThreads" value="${boss314.maxThreads}"/>
+		<property name="encoding" value="${boss314.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	  	<bean name="bossCommunicator714" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss714.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss714.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss714.soTimeout}"/>
+		<property name="maxThreads" value="${boss714.maxThreads}"/>
+		<property name="encoding" value="${boss714.encoding}"/> 
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+		</bean>
+			  	<bean name="bossCommunicator1214" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1214.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1214.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1214.soTimeout}"/>
+		<property name="maxThreads" value="${boss1214.maxThreads}"/>
+		<property name="encoding" value="${boss1214.encoding}"/> 
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+		</bean>
+	<!-- 割接地市_苏州_业务查询 -->
+	<bean name="bossCommunicator111" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss111.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss111.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss111.soTimeout}"/>
+		<property name="maxThreads" value="${boss111.maxThreads}"/>
+		<property name="encoding" value="${boss111.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_苏州_清单查询 -->
+	<bean name="bossCommunicator211" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss211.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss211.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss211.soTimeout}"/>
+		<property name="maxThreads" value="${boss211.maxThreads}"/>
+		<property name="encoding" value="${boss211.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator711" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss711.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss711.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss711.soTimeout}"/>
+		<property name="maxThreads" value="${boss711.maxThreads}"/>
+		<property name="encoding" value="${boss711.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+		<bean name="bossCommunicator1211" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1211.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1211.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1211.soTimeout}"/>
+		<property name="maxThreads" value="${boss1211.maxThreads}"/>
+		<property name="encoding" value="${boss1211.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<!-- 割接地市_苏州_大批量查询 -->
+	<bean name="bossCommunicator311" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss311.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss311.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss311.soTimeout}"/>
+		<property name="maxThreads" value="${boss311.maxThreads}"/>
+		<property name="encoding" value="${boss311.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+		<!-- 割接地市_连云港_业务查询 -->
+	<bean name="bossCommunicator115" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss115.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss115.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss115.soTimeout}"/>
+		<property name="maxThreads" value="${boss115.maxThreads}"/>
+		<property name="encoding" value="${boss115.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_连云港_清单查询 -->
+	<bean name="bossCommunicator215" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss215.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss215.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss215.soTimeout}"/>
+		<property name="maxThreads" value="${boss215.maxThreads}"/>
+		<property name="encoding" value="${boss215.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator715" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss715.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss715.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss715.soTimeout}"/>
+		<property name="maxThreads" value="${boss715.maxThreads}"/>
+		<property name="encoding" value="${boss715.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator1215" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1215.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1215.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1215.soTimeout}"/>
+		<property name="maxThreads" value="${boss1215.maxThreads}"/>
+		<property name="encoding" value="${boss1215.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>	
+	<!-- 割接地市_连云港_大批量查询 -->
+	<bean name="bossCommunicator315" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss315.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss315.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss315.soTimeout}"/>
+		<property name="maxThreads" value="${boss315.maxThreads}"/>
+		<property name="encoding" value="${boss315.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_徐州_业务查询 -->
+	<bean name="bossCommunicator116" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss116.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss116.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss116.soTimeout}"/>
+		<property name="maxThreads" value="${boss116.maxThreads}"/>
+		<property name="encoding" value="${boss116.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_徐州_清单查询 -->
+	<bean name="bossCommunicator216" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss216.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss216.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss216.soTimeout}"/>
+		<property name="maxThreads" value="${boss216.maxThreads}"/>
+		<property name="encoding" value="${boss216.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator716" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss716.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss716.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss716.soTimeout}"/>
+		<property name="maxThreads" value="${boss716.maxThreads}"/>
+		<property name="encoding" value="${boss716.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator1216" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1216.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1216.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1216.soTimeout}"/>
+		<property name="maxThreads" value="${boss1216.maxThreads}"/>
+		<property name="encoding" value="${boss1216.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>	
+	<!-- 割接地市_徐州_大批量查询 -->
+	<bean name="bossCommunicator316" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss316.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss316.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss316.soTimeout}"/>
+		<property name="maxThreads" value="${boss316.maxThreads}"/>
+		<property name="encoding" value="${boss316.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_宿迁_业务查询 -->
+	<bean name="bossCommunicator113" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss113.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss113.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss113.soTimeout}"/>
+		<property name="maxThreads" value="${boss113.maxThreads}"/>
+		<property name="encoding" value="${boss113.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<!-- 割接地市_宿迁_清单查询 -->
+	<bean name="bossCommunicator213" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss213.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss213.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss213.soTimeout}"/>
+		<property name="maxThreads" value="${boss213.maxThreads}"/>
+		<property name="encoding" value="${boss213.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator713" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss713.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss713.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss713.soTimeout}"/>
+		<property name="maxThreads" value="${boss713.maxThreads}"/>
+		<property name="encoding" value="${boss713.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator1213" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss1213.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss1213.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss1213.soTimeout}"/>
+		<property name="maxThreads" value="${boss1213.maxThreads}"/>
+		<property name="encoding" value="${boss1213.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>	
+	<!-- 割接地市_宿迁_大批量查询 -->
+	<bean name="bossCommunicator313" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss313.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss313.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss313.soTimeout}"/>
+		<property name="maxThreads" value="${boss313.maxThreads}"/>
+		<property name="encoding" value="${boss313.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+		<!-- 割接地市_集团 -->
+	<bean name="bossCommunicator911" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss911.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss911.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss911.soTimeout}"/>
+		<property name="maxThreads" value="${boss911.maxThreads}"/>
+		<property name="encoding" value="${boss911.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator912" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss912.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss912.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss912.soTimeout}"/>
+		<property name="maxThreads" value="${boss912.maxThreads}"/>
+		<property name="encoding" value="${boss912.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator913" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss913.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss913.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss913.soTimeout}"/>
+		<property name="maxThreads" value="${boss913.maxThreads}"/>
+		<property name="encoding" value="${boss913.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	
+	<bean name="bossCommunicator914" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss914.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss914.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss914.soTimeout}"/>
+		<property name="maxThreads" value="${boss914.maxThreads}"/>
+		<property name="encoding" value="${boss914.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator915" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss915.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss915.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss915.soTimeout}"/>
+		<property name="maxThreads" value="${boss915.maxThreads}"/>
+		<property name="encoding" value="${boss915.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator916" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss916.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss916.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss916.soTimeout}"/>
+		<property name="maxThreads" value="${boss916.maxThreads}"/>
+		<property name="encoding" value="${boss916.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator917" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss917.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss917.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss917.soTimeout}"/>
+		<property name="maxThreads" value="${boss917.maxThreads}"/>
+		<property name="encoding" value="${boss917.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator918" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss918.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss918.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss918.soTimeout}"/>
+		<property name="maxThreads" value="${boss918.maxThreads}"/>
+		<property name="encoding" value="${boss918.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator919" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss919.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss919.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss919.soTimeout}"/>
+		<property name="maxThreads" value="${boss919.maxThreads}"/>
+		<property name="encoding" value="${boss919.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+		<bean name="bossCommunicator920" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss920.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss920.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss920.soTimeout}"/>
+		<property name="maxThreads" value="${boss920.maxThreads}"/>
+		<property name="encoding" value="${boss920.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator921" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss921.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss921.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss921.soTimeout}"/>
+		<property name="maxThreads" value="${boss921.maxThreads}"/>
+		<property name="encoding" value="${boss921.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator922" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss922.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss922.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss922.soTimeout}"/>
+		<property name="maxThreads" value="${boss922.maxThreads}"/>
+		<property name="encoding" value="${boss922.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	<bean name="bossCommunicator923" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss923.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss923.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss923.soTimeout}"/>
+		<property name="maxThreads" value="${boss923.maxThreads}"/>
+		<property name="encoding" value="${boss923.encoding}"/>
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>
+	  	<bean name="bossCommunicator9" class="com.xwtech.xwecp.communication.HttpCommunicator" singleton="true" >
+		<property name="remoteURL" value="${boss9.remoteURL}"/>
+		<property name="connectionTimeout" value="${boss9.connectionTimeout}"/>
+		<property name="soTimeout" value="${boss9.soTimeout}"/>
+		<property name="maxThreads" value="${boss9.maxThreads}"/>
+		<property name="encoding" value="${boss9.encoding}"/> 
+		<property name="qryInterfaceConnectionTimeDAOImpl" ref="qryInterfaceConnectionTimeDao"/>
+	</bean>  
+	
+	<bean name="serviceCallerPrivilegeDAOImpl" class="com.xwtech.xwecp.dao.ServiceCallerPrivilegeDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	
+	
+	
+	<bean name="teletextDispatchDAO" class="com.xwtech.xwecp.dao.TeletextDispatchDAO">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	
+	<bean name="packageChangeDAO" class="com.xwtech.xwecp.dao.PackageChangeDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	
+	<bean name="yingXingDao" class="com.xwtech.xwecp.dao.YingXingCardDaoImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	
+	<bean name="i8jtrhDao" class="com.xwtech.xwecp.dao.I8jtrhDaoImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	
+	<bean name="chargingOrderFeedBack" class="com.xwtech.xwecp.dao.ChargingOrderFeedbackDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	
+	<bean name="zxrwDAO" class="com.xwtech.xwecp.dao.ZxrwDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	<bean name="itBossDao" class="com.xwtech.xwecp.dao.ItBossDaoImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	<bean name="reserveDAO" class="com.xwtech.xwecp.dao.ReserveDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+		<property name="orderMarketIdGenerator" ref="orderMarketIdGenerator"></property>
+		<property name="orderIdGenerator" ref="orderIdGenerator"></property>
+	</bean>
+	<bean id="interfaceSysEmerStateImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceSysEmerStateImpl" singleton="true">
+		<property name="interfaceDAO" ref="interfaceDAO"/>
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="smsDao" ref="smsDao"/>
+	</bean>
+	<bean id="interfaceBusiEmerStateImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceBusiEmerStateImpl" singleton="true">
+		<property name="interfaceDAO" ref="interfaceDAO"/>
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="smsDao" ref="smsDao"/>
+	</bean>
+	<bean id="interfaceNetinstallImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceNetinstallImpl" singleton="true">
+		<property name="interfaceDAO" ref="interfaceDAO"/>
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="smsDao" ref="smsDao"/>
+	</bean>
+	 
+	<bean id="pushFluxRemindImpl" class="com.xwtech.xwecp.interfaces.impl.PushFluxRemindImpl" singleton="true">
+	</bean>
+	
+	<bean id="chargingOrderFeedbackImpl" class="com.xwtech.xwecp.interfaces.impl.ChargingOrderFeedbackImpl" singleton="true">
+		<property name="chargingOrderFeedBackDAO" ref="chargingOrderFeedBack"/>
+	</bean>
+	
+	
+	
+	<bean id="interfaceCfmyorderqueryImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceCfmyorderqueryImpl" singleton="true">
+		<property name="interfaceDAO" ref="interfaceDAO"/>
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="smsDao" ref="smsDao"/>
+	</bean>
+	
+    <bean id="interfaceCfmyordercancelImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceCfmyordercancelImpl" singleton="true">
+		<property name="interfaceDAO" ref="interfaceDAO"/>
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="smsDao" ref="smsDao"/>
+	</bean>
+	
+	<bean id="interfaceCfmyordersubmitImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceCfmyordersubmitImpl" singleton="true">
+		<property name="interfaceDAO" ref="interfaceDAO"/>
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="smsDao" ref="smsDao"/>
+	</bean>
+	
+	<bean id="interfaceCfmyorderverifyImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceCfmyorderverifyImpl" singleton="true">
+		<property name="interfaceDAO" ref="interfaceDAO"/>
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="smsDao" ref="smsDao"/>
+	</bean>
+	
+	<bean id="interfaceCendinginfoqueryImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceCendinginfoqueryImpl" singleton="true">
+		<property name="interfaceDAO" ref="interfaceDAO"/>
+		<property name="wellFormedDAO" ref="wellFormedDAO"/>
+		<property name="smsDao" ref="smsDao"/>
+	</bean>
+	
+	
+	<bean name="interfaceDAO" class="com.xwtech.xwecp.dao.InterfaceDAO" singleton="true">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+		<property name="lobHandler"><ref bean="lobHandler"/></property>
+	</bean>
+	<bean name="sendHttpMall" class="com.xwtech.xwecp.web.serverHttp.SendHttpMall" singleton="true">
+	</bean>
+	<bean name="tableServerInfoSync" class="com.xwtech.xwecp.web.serverHttp.TableServerInfoSync" singleton="true">
+	</bean>
+	
+	<bean name="interfaceOrderFeedBackImpl" class="com.xwtech.xwecp.interfaces.impl.InterfaceOrderFeedBackImpl" singleton="true">
+	<property name="interfaceDAO" ref="interfaceOrderFeedBackDao"/>
+	</bean>	
+	
+	<bean name="interfaceOrderFeedBackDao" class="com.xwtech.xwecp.dao.InterfaceDAO" singleton="true">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+		<property name="lobHandler"><ref bean="lobHandler"/></property>
+	</bean>		
+	
+	
+	<bean name="qryInterfaceConnectionTimeDao" class="com.xwtech.xwecp.dao.QryInterfaceConnetionTimeDAOImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="cache" ref="cache"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean name="accessIdGenerator" class="com.xwtech.xwecp.msg.SequenceGenerator" singleton="true">
+		<constructor-arg value="S${platform.appId}#{date}"></constructor-arg>
+		<constructor-arg value="${platform.sequence.begin}"></constructor-arg>
+		<constructor-arg value="${platform.sequence.end}"></constructor-arg>
+	</bean>
+	
+	<bean name="bossRequestIdGenerator" class="com.xwtech.xwecp.msg.SequenceGenerator" singleton="true">
+		<constructor-arg value="B${platform.appId}#{date}"></constructor-arg>
+		<constructor-arg value="${platform.sequence.begin}"></constructor-arg>
+		<constructor-arg value="${platform.sequence.end}"></constructor-arg>
+	</bean>
+
+	<bean name="orderIdGenerator" class="com.xwtech.xwecp.msg.OrderIdGenerator" singleton="true">
+		<constructor-arg value="B#{date}"></constructor-arg>
+		<constructor-arg value="${platform.sequence.begin}"></constructor-arg>
+		<constructor-arg value="${platform.sequence.end}"></constructor-arg>
+	</bean>
+	
+	<bean name="orderMarketIdGenerator" class="com.xwtech.xwecp.msg.OrderMarketIdGenerator" singleton="true">
+		<constructor-arg value="M#{date}"></constructor-arg>
+		<constructor-arg value="${platform.sequence.begin}"></constructor-arg>
+		<constructor-arg value="${platform.sequence.end}"></constructor-arg>
+	</bean>
+
+
+</beans>

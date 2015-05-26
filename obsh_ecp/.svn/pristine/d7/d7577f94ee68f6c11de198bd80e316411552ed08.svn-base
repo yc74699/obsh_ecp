@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service-metadata>
+	<namespace>com.xwtech.xwecp.service.logic.IUserService</namespace>	<!-- 命名空间, 对应java类名 -->
+	<name>login1</name>			<!-- 接口名称, 对应于namespace类中的方法 -->f_li_namespace
+	<cmd>L10014</cmd>				<!-- 命令字 -->
+	<chinese-name>用户登陆</chinese-name>	<!-- 中文名称 -->
+	<description>根据用户手机号码和密码取得用户的相关信息</description>
+	<input>
+		<param name="mobile" data-type="string" regular="^(13[0-9]|15[0|3|6|8|9])\d{8}$" index="1"/>
+		<param name="password" data-type="string" regular="" index="2"/>
+		<param name="userInfo" data-type="class" class="UserInfo" index="3"/>
+	</input>
+	<output>
+		<field name="userId" data-type="string" default=""/>
+		<field name="userName" data-type="string" default=""/>
+		<field name="userBrand" data-type="string" default="0"/>
+		<field name="userBrandId" data-type="int" default="0"/>
+		<field name="userBalance" data-type="int" default="0"/>
+		<field name="userHistory" data-type="list" class="UserHistory"/>
+	</output>
+	<impl direct-impl="false" impl-class="">  
+		<boss-teletext-mapping>
+			<!--
+			<boss-teletext param-name="*" match="*" template="10110" resolver="com.xwtec.ecp.boss.resolver.CMD_10110_BOSS_RESOLVER"/>
+			-->
+			<boss-teletext param-name="*" match="*" template="B10011"/>
+		</boss-teletext-mapping>
+		<result-mapping>
+			<mapping name="userId" expression="xpath(/result/user-id/text())"/>
+			<mapping name="userName" expression="xpath(/result/user-name/text())"/>
+			<mapping name="userBrand" expression="xpath(/result/user-brand/text())"/>
+			<mapping name="userBrandId" expression="xpath(/result/user-brand-id/text())"/>
+			<mapping name="userBalance" expression="xpath(/result/user-balance/text())"/>			
+		</result-mapping>
+	</impl>
+	<extension>
+		<class name="UserInfo">
+			<field name="userId" data-type="string" default=""/>
+			<field name="userBrand" data-type="class" class="UserBrand"/>
+		</class>
+		<class name="UserBrand">
+			<field name="userBrand" data-type="string" default=""/>
+			<field name="userBrandId" data-type="int" default="0"/>
+		</class>
+		<class name="UserHistory">
+			<field name="phoneNumber" data-type="string"/>
+			<field name="phoneTime" data-type="string" default="2000-1-1"/>
+			<field name="feeDetail" data-type="list" class="FeeDetail"/>
+		</class>
+		<class name="FeeDetail">
+			<field name="phoneNumber" data-type="string"/>
+			<field name="fee" data-type="double" default="0.0"/>
+		</class>
+	</extension>
+</service-metadata>

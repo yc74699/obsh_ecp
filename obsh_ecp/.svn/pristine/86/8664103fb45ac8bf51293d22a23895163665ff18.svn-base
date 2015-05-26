@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}">
+		</property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<!-- 初始化连接 -->
+		<property name="initialSize" value="${jdbc.initialSize}"></property>
+		<!-- 最大连接数量 -->
+		<property name="maxActive" value="${jdbc.maxActive}"></property>
+		<!-- 最大空闲连接 -->
+		<property name="maxIdle" value="${jdbc.maxIdle}"></property>
+		<!-- 最小空闲连接 -->
+		<property name="minIdle" value="${jdbc.minIdle}"></property>
+		<!-- 超时等待时间以毫秒为单位 6000毫秒/1000等于6秒 -->
+		<property name="maxWait" value="${jdbc.maxWait}"></property>
+		<!-- 是否自动回收超时连接 -->
+		<property name="removeAbandoned" value="true"></property>
+		<!-- 超时时间(以秒数为单位) -->
+		<property name="removeAbandonedTimeout" value="180"></property>
+		<!-- 是否在自动回收超时连接的时候打印连接的超时错误 -->
+		<property name="logAbandoned" value="true"></property>
+		<property name="validationQuery" value="select 1 from dual"></property>
+		<property name="testOnBorrow" value="true"></property>
+		<property name="testOnReturn" value="true"></property>
+		<property name="testWhileIdle" value="true"></property>
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+       <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- 指定处理此数据的类   --> 
+	<bean id="lobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler" 
+	 	  abstract="false" lazy-init="true" autowire="default" dependency-check="default"> 
+	</bean>
+</beans>
